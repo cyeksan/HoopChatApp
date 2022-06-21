@@ -16,16 +16,12 @@ import kotlinx.android.synthetic.main.fragment_call.*
 import kotlinx.android.synthetic.main.fragment_status.*
 import kotlin.concurrent.thread
 
-
-// TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 private var db: Db? = null
 
 class StatusFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-
     private var param1: String? = null
     private var param2: String? = null
 
@@ -37,7 +33,7 @@ class StatusFragment : Fragment() {
         }
 
         db =
-            Db.getInstance(context!!)
+            Db.getInstance(requireContext())
 
         thread(start = true) {
             db!!.statusDao().insertStatus(
@@ -107,19 +103,19 @@ class StatusFragment : Fragment() {
         recycler_view_status.layoutManager = layoutManager
         recycler_view_status.adapter = adapter
 
-        db?.statusDao()!!.getAllItem().observe(this, Observer<List<StatusEntity>> {
+        db?.statusDao()!!.getAllItem().observe(viewLifecycleOwner, Observer<List<StatusEntity>> {
 
             adapter.setNewItemList(it!!)
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        return inflater!!.inflate(R.menu.menu_status, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        return inflater.inflate(R.menu.menu_status, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when (item!!.itemId) {
+        when (item.itemId) {
 
             R.id.search -> Toast.makeText(context, "MAKE SEARCH", Toast.LENGTH_LONG).show()
             R.id.privacy_policy -> Toast.makeText(context, "Privacy policy is clicked", Toast.LENGTH_LONG).show()
@@ -134,8 +130,6 @@ class StatusFragment : Fragment() {
     }
 
     companion object {
-
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             StatusFragment().apply {

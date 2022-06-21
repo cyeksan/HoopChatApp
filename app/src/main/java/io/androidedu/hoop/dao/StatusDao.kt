@@ -5,18 +5,18 @@ import androidx.room.*
 import io.androidedu.hoop.entity.StatusEntity
 
 @Dao
-interface StatusDAO {
+interface StatusDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertStatus(statusEntity: StatusEntity)
 
-    @Query("DELETE FROM status")
+    @Query("DELETE FROM status_table")
     fun deleteAll()
 
     @Delete
     fun deleteItem(item: StatusEntity)
 
-    @Query("SELECT * FROM status")
+    @Query("SELECT * FROM status_table")
     fun getAllItem(): LiveData<List<StatusEntity>>
 
 

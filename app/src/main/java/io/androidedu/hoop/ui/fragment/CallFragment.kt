@@ -15,15 +15,12 @@ import io.androidedu.hoop.entity.CallEntity
 import kotlinx.android.synthetic.main.fragment_call.*
 import kotlin.concurrent.thread
 
-
-// TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 private var db: Db? = null
 
 class CallFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
@@ -34,7 +31,7 @@ class CallFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
-        db = Db.getInstance(context!!)
+        db = Db.getInstance(requireContext())
 
         thread(start = true) {
             db!!.callDao().insertCall(
@@ -141,20 +138,20 @@ class CallFragment : Fragment() {
         recycler_view_call.layoutManager = layoutManager
         recycler_view_call.adapter = adapter
 
-        db?.callDao()!!.getAllItem().observe(this, Observer<List<CallEntity>> {
+        db?.callDao()!!.getAllItem().observe(viewLifecycleOwner, Observer<List<CallEntity>> {
 
             adapter.setNewItemList(it!!)
         })
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        return inflater!!.inflate(R.menu.menu_calls, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        return inflater.inflate(R.menu.menu_calls, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when (item!!.itemId) {
+        when (item.itemId) {
 
             R.id.search -> Toast.makeText(context, "MAKE SEARCH", Toast.LENGTH_LONG).show()
             R.id.clear_call_log -> Toast.makeText(context, "Clear call log is clicked", Toast.LENGTH_LONG).show()
@@ -169,8 +166,6 @@ class CallFragment : Fragment() {
     }
 
     companion object {
-
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             CallFragment().apply {

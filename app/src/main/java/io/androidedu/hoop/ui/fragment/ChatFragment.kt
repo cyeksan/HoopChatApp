@@ -22,8 +22,6 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class ChatFragment : Fragment() {
-
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var db: Db? = null
@@ -35,13 +33,13 @@ class ChatFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
-        db = Db.getInstance(context!!)
+        db = Db.getInstance(requireContext())
 
         thread(start = true) {
             db!!.chatDao().insertChat(
                 ChatEntity(
-                    "Cansu",
-                    "Ben Cansu",
+                    "Angela",
+                    "Hey! I'm Angela",
                     "Yesterday",
                     R.drawable.ic_girl1
                 )
@@ -49,8 +47,8 @@ class ChatFragment : Fragment() {
 
             db!!.chatDao().insertChat(
                 ChatEntity(
-                    "Serhat",
-                    "Ben Serhat",
+                    "Bill",
+                    "Hey! I'm Bill",
                     "Yesterday",
                     R.drawable.ic_man1
                 )
@@ -58,8 +56,8 @@ class ChatFragment : Fragment() {
 
             db!!.chatDao().insertChat(
                 ChatEntity(
-                    "Bilinmeyen",
-                    "Ben çok uzun bir chat mesajıyım. Ben çok uzun bir chat mesajıyım. Ben çok uzun bir chat mesajıyım. Ben çok uzun bir chat mesajıyım."
+                    "George",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
                     ,
                     "Yesterday",
                     R.drawable.ic_man2
@@ -67,20 +65,20 @@ class ChatFragment : Fragment() {
             )
 
             db!!.chatDao().insertChat(
-                ChatEntity("Caner", "Ben Caner", "14:57", R.drawable.ic_man3)
+                ChatEntity("My brother", "Hi! What's up?", "14:57", R.drawable.ic_man3)
             )
 
             db!!.chatDao().insertChat(
                 ChatEntity(
-                    "Benim adım çok uzun. Benim adım çok uzun. Benim adım çok uzun. Benim adım çok uzun. Benim adım çok uzun.",
-                    "Ben adı çok uzun olan biriyim.",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
                     "15:45",
                     R.drawable.ic_man4
                 )
             )
 
             db!!.chatDao().insertChat(
-                ChatEntity("Annem", "Eve gel.", "23:43", R.drawable.ic_girl1)
+                ChatEntity("My mom", "Are you OK?", "23:43", R.drawable.ic_girl1)
             )
 
             db!!.chatDao().insertChat(
@@ -126,19 +124,19 @@ class ChatFragment : Fragment() {
         recycler_view_chat.layoutManager = layoutManager
         recycler_view_chat.adapter = adapter
 
-        db?.chatDao()!!.getAllItem().observe(this, Observer<List<ChatEntity>> {
+        db?.chatDao()!!.getAllItem().observe(viewLifecycleOwner, Observer<List<ChatEntity>> {
 
             adapter.setNewItemList(it!!)
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater!!.inflate(R.menu.menu_chats, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_chats, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when (item!!.itemId) {
+        when (item.itemId) {
             R.id.new_group -> Toast.makeText(context, "New Group is selected!", Toast.LENGTH_LONG).show()
             R.id.new_broadcasts -> Toast.makeText(context, "New Broadcasts is selected!", Toast.LENGTH_LONG).show()
             R.id.whatsapp_web -> Toast.makeText(context, "WhatsApp Web is selected!", Toast.LENGTH_LONG).show()
@@ -157,8 +155,6 @@ class ChatFragment : Fragment() {
     }
 
     companion object {
-
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             ChatFragment().apply {
